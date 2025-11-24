@@ -311,15 +311,15 @@
       const div = document.createElement('div');
       div.classList.add('card'); // Keep as card for consistency
       div.innerHTML = `
-        <div class="relay-box" id="relayBox${i+1}">
+        <div class="relay-box" id="relayBox${i}">
           <div class="relay-header">
-            <span class="relay-title">Relay ${i+1}</span>
-            <div id="relayLight${i+1}" class="relay-light"></div>
+            <span class="relay-title">Relay ${i}</span>
+            <div id="relayLight${i}" class="relay-light"></div>
           </div>
-          <small id="statusLed${i+1}" class="relay-status off">Tắt</small>
+          <small id="statusLed${i}" class="relay-status off">Tắt</small>
           <div style="margin-top:10px;">
-            <button id="${i+1}turnOn" class="btn btn-outline-success btn-sm">Bật</button>
-            <button id="${i+1}turnOff" class="btn btn-outline-danger btn-sm">Tắt</button>
+            <button id="${i}turnOn" class="btn btn-outline-success btn-sm">Bật</button>
+            <button id="${i}turnOff" class="btn btn-outline-danger btn-sm">Tắt</button>
           </div>
         </div>
       `;
@@ -428,7 +428,7 @@
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
       maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 17,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 18,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
