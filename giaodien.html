@@ -243,7 +243,12 @@
 
     <!-- Temperature and Protect Configuration Row -->
     <div class="temp-protect-row">
-
+      <!-- <div class="protect-card">
+        <h5 class="text-primary">CẤU HÌNH DÒNG ĐIỆN BẢO VỆ</h5>
+        <p class="text-muted">Nhập giá trị dòng điện ngưỡng (A) áp dụng cho cả 3 pha</p>
+        <input type="number" id="protectAll" placeholder="Nhập giá trị (A)" min="0" step="0.1">
+        <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
+      </div> -->
       <div class="header-right">
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
         <div class="flex-center">
@@ -421,9 +426,9 @@
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
       needHistoryConfigs: true,          /* Cần giá trị lịch sử */
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
-      maxRealtimeConfigsCount: 25,        /* Số lượng tối đa giá trị hiện thời */
+      maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 16,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 17,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
@@ -452,15 +457,15 @@
         configLed6 = configuration.realtime_configs[14];
         configLed7 = configuration.realtime_configs[15];   
         configLed8 = configuration.realtime_configs[16];
-
-        configTempESP32 = configuration.realtime_configs[17];
-        configTempSTM = configuration.realtime_configs[18];
-        configVoltA=configuration.realtime_configs[19];
-        configVoltB=configuration.realtime_configs[20];
-        configVoltC=configuration.realtime_configs[21];
-        configCurrentA=configuration.realtime_configs[22];
-        configCurrentB=configuration.realtime_configs[23];
-        configCurrentC=configuration.realtime_configs[24];
+        configProtectFrom = configuration.realtime_configs[17];
+        configTempESP32 = configuration.realtime_configs[18];
+        configTempSTM = configuration.realtime_configs[19];
+        configVoltA=configuration.realtime_configs[20];
+        configVoltB=configuration.realtime_configs[21];
+        configVoltC=configuration.realtime_configs[22];
+        configCurrentA=configuration.realtime_configs[23];
+        configCurrentB=configuration.realtime_configs[24];
+        configCurrentC=configuration.realtime_configs[25];
        
         actions1 = configuration.actions.slice(0, 2);
         actions2 = configuration.actions.slice(2, 4);
@@ -470,7 +475,7 @@
         actions6 = configuration.actions.slice(10, 12);
         actions7 = configuration.actions.slice(12, 14);
         actions8 = configuration.actions.slice(14, 16);
-
+        actions9 = configuration.actions.slice(16, 17);
 
 
       },
@@ -675,6 +680,14 @@
             relayBox8.classList.remove('on');
           }
         }
+        if (newProtectFrom !== fromValue) {
+          newSProtectFrom = fromValue;
+          if (fromValue === 1) {
+            inputProtectFrom.innerHTML = '10';  
+          } else {
+            inputProtectFrom.innerHTML = '0';  
+          }
+        }
       },
     });
     turnOnrelay1.addEventListener('click', () => {
@@ -729,7 +742,20 @@
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
+    sendProtect.addEventListener("click", () => {
+      eraWidget.triggerAction(actions9[0]?.action, null);
+      const fromValue = inputProtectFrom.value.trim();
+      if (fromValue === "") {
+        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
+        return;
+      }
 
+      //  Cập nhật realtime config — gửi lên ERA Cloud
+      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+
+      //  Log ra console để dễ kiểm tra
+      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
+    });
   </script>
 </body>
 </html>
