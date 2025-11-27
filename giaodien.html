@@ -489,7 +489,11 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
       onValues: (values) => {
         // Cập nhật giá trị nhận được
         //  từ widget
-      
+      function formatValue(v) {
+    return Number(String(v).replace(",", "."))
+        .toFixed(2)
+        .replace(".", ",");
+}
         const valuePower1 = values[configPower1.id].value;
         const valuePower2 = values[configPower2.id].value;
         const valuePower3 = values[configPower3.id].value;
@@ -519,7 +523,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         const fromValue = values[configProtectFrom.id].value;
 
         // Cập nhật giao diện người dùng với giá trị mới
-        power1.innerHTML = valuePower1 + ' W';
+        power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = valuePower2 + ' W';
         power3.innerHTML = valuePower3 + ' W';
 
@@ -534,12 +538,14 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         cosB.innerHTML = valueCosB;
         cosC.innerHTML = valueCosC;
 
-        gaugeA.series[0].points[0].update(valueVoltA);
+        gaugeA.series[0].points[0].update(
+          Number(formatValue(valueVoltA).replace(",",".")));
         gaugeB.series[0].points[0].update(valueVoltB);
         gaugeC.series[0].points[0].update(valueVoltC);
 
         
-        gaugeSA.series[0].points[0].update(valueCurrentA);
+        gaugeSA.series[0].points[0].update(
+          Number(formatValue(valueCurrentA).replace(",",".")));
         gaugeSB.series[0].points[0].update(valueCurrentB);
         gaugeSC.series[0].points[0].update(valueCurrentC);
 
