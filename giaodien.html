@@ -439,6 +439,14 @@
 
 console.log("REALTIME CONFIGS:", configuration.realtime_configs);
 
+
+    configVoltA = configuration.realtime_configs.find(c => c.key === "V_A");
+    configVoltB = configuration.realtime_configs.find(c => c.key === "V_B");
+    configVoltC = configuration.realtime_configs.find(c => c.key === "V_C");
+
+    if (!configVoltA || !configVoltB || !configVoltC) {
+        console.error("Không tìm thấy key Volt!");
+    }
         // Lưu các cấu hình khi nhận được từ widget
         configPower1 = configuration.realtime_configs[0];
         configPower2 = configuration.realtime_configs[1];
@@ -460,9 +468,9 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         configProtectFrom = configuration.realtime_configs[17];
         configTempESP32 = configuration.realtime_configs[18];
         configTempSTM = configuration.realtime_configs[19];
-        const configVoltA = configuration.realtime_configs.find(x => x.key === "V_A");
-        const configVoltB = configuration.realtime_configs.find(x => x.key === "V_B");
-        const configVoltC = configuration.realtime_configs.find(x => x.key === "V_C");
+        // const configVoltA = configuration.realtime_configs.find(x => x.key === "V_A");
+        // const configVoltB = configuration.realtime_configs.find(x => x.key === "V_B");
+        // const configVoltC = configuration.realtime_configs.find(x => x.key === "V_C");
         // configVoltA=configuration.realtime_configs[20];
         // configVoltB=configuration.realtime_configs[21];
         // configVoltC=configuration.realtime_configs[22];
@@ -485,7 +493,22 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
 
       /* Hàm callback được gọi khi nhận giá trị mới từ server */
       onValues: (values) => {
-        // Cập nhật giá trị nhận được từ widget
+        // Cập nhật giá trị nhận được
+        //  từ widget
+     if (configVoltA) {
+        const valueA = values[configVoltA.id]?.value;
+        updateGauge(gaugeVoltA, valueA);
+    }
+
+    if (configVoltB) {
+        const valueB = values[configVoltB.id]?.value;
+        updateGauge(gaugeVoltB, valueB);
+    }
+
+    if (configVoltC) {
+        const valueC = values[configVoltC.id]?.value;
+        updateGauge(gaugeVoltC, valueC);
+    }       
         const valuePower1 = values[configPower1.id].value;
         const valuePower2 = values[configPower2.id].value;
         const valuePower3 = values[configPower3.id].value;
