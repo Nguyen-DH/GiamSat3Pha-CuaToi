@@ -489,10 +489,8 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
       onValues: (values) => {
         // Cập nhật giá trị nhận được
         //  từ widget
-      function formatValue(v) {
-    return Number(String(v).replace(",", "."))
-        .toFixed(2)
-        .replace(".", ",");
+function formatValue(v) {
+  return parseFloat(v).toFixed(2).replace(".", ",");
 }
         const valuePower1 = values[configPower1.id].value;
         const valuePower2 = values[configPower2.id].value;
