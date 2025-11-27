@@ -524,15 +524,15 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
 
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
-        power2.innerHTML = valuePower2 + ' W';
-        power3.innerHTML = valuePower3 + ' W';
+        power2.innerHTML = formatValue(valuePower2) + ' W';
+        power3.innerHTML = formatValue(valuePower3) + ' W';
 
         powerS1.innerHTML = valueS1POWER + ' Hz';
         powerS2.innerHTML = valueS2POWER + ' Hz';
         powerS3.innerHTML = valueS3POWER + ' Hz';
 
-        Tempstm.innerHTML = valueTempSTM + "℃";
-        Tempsp32.innerHTML = valueTempESP32 + "℃";
+        Tempstm.innerHTML =formatValue(valueTempSTM ) + "℃";
+        Tempsp32.innerHTML = formatValue(valueTempESP32) + "℃";
 
         cosA.innerHTML = valueCosA;
         cosB.innerHTML = valueCosB;
@@ -540,14 +540,18 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
 
         gaugeA.series[0].points[0].update(
           Number(formatValue(valueVoltA).replace(",",".")));
-        gaugeB.series[0].points[0].update(valueVoltB);
-        gaugeC.series[0].points[0].update(valueVoltC);
+        gaugeB.series[0].points[0].update(
+          Number(formatValue(valueVoltB).replace(",",".")));
+        gaugeC.series[0].points[0].update(
+          Number(formatValue(valueVoltC).replace(",",".")));
 
         
         gaugeSA.series[0].points[0].update(
           Number(formatValue(valueCurrentA).replace(",",".")));
-        gaugeSB.series[0].points[0].update(valueCurrentB);
-        gaugeSC.series[0].points[0].update(valueCurrentC);
+        gaugeSB.series[0].points[0].update(
+          Number(formatValue(valueCurrentB).replace(",",".")));
+        gaugeSC.series[0].points[0].update(
+          Number(formatValue(valueCurrentC).replace(",",".")));
 
         if (newStatusLed1 !== valueLed1) {
           newStatusLed1 = valueLed1;
