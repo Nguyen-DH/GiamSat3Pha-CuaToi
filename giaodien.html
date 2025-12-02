@@ -525,16 +525,16 @@ function formatValue(v) {
         power2.innerHTML = formatValue(valuePower2) + ' W';
         power3.innerHTML = formatValue(valuePower3) + ' W';
 
-        powerS1.innerHTML = valueS1POWER + ' Hz';
-        powerS2.innerHTML = valueS2POWER + ' Hz';
-        powerS3.innerHTML = valueS3POWER + ' Hz';
+        powerS1.innerHTML = formatValue(valueS1POWER) + ' Hz';
+        powerS2.innerHTML = formatValue(valueS2POWER) + ' Hz';
+        powerS3.innerHTML = formatValue(valueS3POWER) + ' Hz';
 
         Tempstm.innerHTML =formatValue(valueTempSTM ) + "℃";
         Tempsp32.innerHTML = formatValue(valueTempESP32) + "℃";
 
-        cosA.innerHTML = valueCosA;
-        cosB.innerHTML = valueCosB;
-        cosC.innerHTML = valueCosC;
+        cosA.innerHTML = formatValue(valueCosA);
+        cosB.innerHTML = formatValue(valueCosB);
+        cosC.innerHTML = formatValue(valueCosC);
 
         gaugeA.series[0].points[0].update(
           Number(formatValue(valueVoltA).replace(",",".")));
