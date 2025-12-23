@@ -426,16 +426,16 @@
     let configLed6 = null, newStatusLed6 = null, actions6 = [];
     let configLed7 = null, newStatusLed7 = null, actions7 = [];
     let configLed8 = null, newStatusLed8 = null, actions8 = [];
-    let configProtectFrom = null, newSProtectFrom = null, actions9 = [];
+    let configProtectFrom = null, newprotectValueDisplay = null, actions9 = [];
 
     const eraWidget = new EraWidget();
     eraWidget.init({
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
       needHistoryConfigs: true,          /* Cần giá trị lịch sử */
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
-      maxRealtimeConfigsCount: 27,        /* Số lượng tối đa giá trị hiện thời */
+      maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 20,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 18,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
@@ -525,7 +525,7 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        const fromValue = values[configProtectFrom.id].value;
+        // const fromValue = values[configProtectFrom.id].value;
 
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
@@ -702,6 +702,27 @@ function formatValue(v) {
             relayBox8.classList.remove('on');
           }
         }
+let protectCurrentValue = 0;
+
+sendProtect.addEventListener("click", () => {
+  const fromValue = parseFloat(inputProtectFrom.value);
+
+  if (isNaN(fromValue) || fromValue <= 0) {
+    alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
+    return;
+  }
+
+  // 1️⃣ Lưu vào biến
+  protectCurrentValue = fromValue;
+
+  // 2️⃣ Gửi lên ERA Cloud
+  // eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
+
+  // 3️⃣ Hiển thị lên giao diện
+  protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
+
+  console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
+});
         // if (newProtectFrom !== fromValue) {
         //   newSProtectFrom = fromValue;
         //   if (fromValue === 1) {
@@ -778,27 +799,7 @@ function formatValue(v) {
     //   //  Log ra console để dễ kiểm tra
     //   console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
     // });
-let protectCurrentValue = 0;
 
-sendProtect.addEventListener("click", () => {
-  const fromValue = parseFloat(inputProtectFrom.value);
-
-  if (isNaN(fromValue) || fromValue <= 0) {
-    alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
-    return;
-  }
-
-  // 1️⃣ Lưu vào biến
-  protectCurrentValue = fromValue;
-
-  // 2️⃣ Gửi lên ERA Cloud
-  eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
-
-  // 3️⃣ Hiển thị lên giao diện
-  protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
-
-  console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
-});
 
   </script>
 </body>
