@@ -243,12 +243,12 @@
 
     <!-- Temperature and Protect Configuration Row -->
     <div class="temp-protect-row">
-      <!-- <div class="protect-card">
+      <div class="protect-card">
         <h5 class="text-primary">CẤU HÌNH DÒNG ĐIỆN BẢO VỆ</h5>
         <p class="text-muted">Nhập giá trị dòng điện ngưỡng (A) áp dụng cho cả 3 pha</p>
         <input type="number" id="protectAll" placeholder="Nhập giá trị (A)" min="0" step="0.1">
         <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
-      </div> -->
+      </div>
       <div class="header-right">
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
         <div class="flex-center">
@@ -757,20 +757,36 @@ function formatValue(v) {
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
-    sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, null);
-      const fromValue = inputProtectFrom.value.trim();
-      if (fromValue === "") {
-        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
-        return;
-      }
+    // sendProtect.addEventListener("click", () => {
+    //   eraWidget.triggerAction(actions9[0]?.action, null);
+    //   const fromValue = inputProtectFrom.value.trim();
+    //   if (fromValue === "") {
+    //     alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
+    //     return;
+    //   }
 
-      //  Cập nhật realtime config — gửi lên ERA Cloud
-      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+    //   //  Cập nhật realtime config — gửi lên ERA Cloud
+    //   eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
 
-      //  Log ra console để dễ kiểm tra
-      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
-    });
+    //   //  Log ra console để dễ kiểm tra
+    //   console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
+    // });
+  sendProtect.addEventListener("click", () => {
+  const fromValue = parseFloat(inputProtectFrom.value);
+
+  if (isNaN(fromValue) || fromValue <= 0) {
+    alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
+    return;
+  }
+
+  // 1️⃣ Lưu vào biến JS
+  protectCurrentValue = fromValue;
+
+  // 2️⃣ Gửi lên ERA Cloud để ESP32 đọc
+  eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
+
+  console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
+});   
   </script>
 </body>
 </html>
