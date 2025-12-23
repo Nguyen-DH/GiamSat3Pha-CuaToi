@@ -236,7 +236,7 @@
       </div>
       <div class="header-center">
         <h2 class="project-title">THIẾT KẾ & THI CÔNG MÔ HÌNH HỆ THÔNG GIÁM SÁT ĐIỆN 3 PHA </h2>
-        <p class="project-info"><strong>GVHD:</strong> Nguyễn Văn Bình</p>
+        <p class="project-info"><strong>GVHD:</strong>ThS. Nguyễn Văn Bình</p>
         <p class="project-info"><strong>SVTH:</strong><br>Lê Phước Nguyên — MSSV: 2225202160006<br>Nguyễn Huỳnh Ngọc Điền — MSSV: 2225202160107</p>
       </div>
     </div>
@@ -248,6 +248,11 @@
         <p class="text-muted">Nhập giá trị dòng điện ngưỡng (A) áp dụng cho cả 3 pha</p>
         <input type="number" id="protectAll" placeholder="Nhập giá trị (A)" min="0" step="0.1">
         <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
+<p class="mt-2 text-muted">
+  Dòng bảo vệ đang áp dụng:
+  <strong id="protectValueDisplay" class="text-danger">-- A</strong>
+</p>
+        
       </div>
       <div class="header-right">
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
@@ -400,6 +405,8 @@
     const statusLed8 = document.getElementById('statusLed8');
     const inputProtectFrom = document.getElementById("protectAll");
     const sendProtect = document.getElementById("sendProtect");
+    const protectValueDisplay = document.getElementById("protectValueDisplay");
+
     const relayLight1 = document.getElementById('relayLight1');
     const Tempstm = document.getElementById("tempstm");
     const Tempsp32 = document.getElementById('tempesp32');
@@ -426,9 +433,9 @@
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
       needHistoryConfigs: true,          /* Cần giá trị lịch sử */
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
-      maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
+      maxRealtimeConfigsCount: 27,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 18,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 20,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
@@ -771,7 +778,9 @@ function formatValue(v) {
     //   //  Log ra console để dễ kiểm tra
     //   console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
     // });
-  sendProtect.addEventListener("click", () => {
+let protectCurrentValue = 0;
+
+sendProtect.addEventListener("click", () => {
   const fromValue = parseFloat(inputProtectFrom.value);
 
   if (isNaN(fromValue) || fromValue <= 0) {
@@ -779,14 +788,18 @@ function formatValue(v) {
     return;
   }
 
-  // 1️⃣ Lưu vào biến JS
+  // 1️⃣ Lưu vào biến
   protectCurrentValue = fromValue;
 
-  // 2️⃣ Gửi lên ERA Cloud để ESP32 đọc
+  // 2️⃣ Gửi lên ERA Cloud
   eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
 
+  // 3️⃣ Hiển thị lên giao diện
+  protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
+
   console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
-});   
+});
+
   </script>
 </body>
 </html>
