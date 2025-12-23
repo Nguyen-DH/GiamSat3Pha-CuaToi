@@ -250,7 +250,7 @@
         <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
 <p class="mt-2 text-muted">
   Dòng bảo vệ đang áp dụng:
-  <strong id="protectValueDisplay" class="text-danger">-- A</strong>
+  <strong id="protectAll" class="text-danger">-- A</strong>
 </p>
         
       </div>
@@ -394,7 +394,7 @@
     const turnOffrelay7 = document.getElementById('7turnOff');
     const turnOnrelay8 = document.getElementById('8turnOn');
     const turnOffrelay8 = document.getElementById('8turnOff');
-    // const SENDONG = document.getElementById('sendProtect');   
+ 
     const statusLed1 = document.getElementById('statusLed1');
     const statusLed2 = document.getElementById('statusLed2');
     const statusLed3 = document.getElementById('statusLed3'); 
@@ -525,7 +525,7 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        // const fromValue = values[configProtectFrom.id].value;
+        const fromValue = values[configProtectFrom.id].value;
 
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
@@ -542,7 +542,7 @@ function formatValue(v) {
         cosA.innerHTML = formatValue(valueCosA);
         cosB.innerHTML = formatValue(valueCosB);
         cosC.innerHTML = formatValue(valueCosC);
-
+        protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
         gaugeA.series[0].points[0].update(
           Number(formatValue(valueVoltA).replace(",",".")));
         gaugeB.series[0].points[0].update(
@@ -702,6 +702,17 @@ function formatValue(v) {
             relayBox8.classList.remove('on');
           }
         }
+
+        // if (newProtectFrom !== fromValue) {
+        //   newSProtectFrom = fromValue;
+        //   if (fromValue === 1) {
+        //     inputProtectFrom.innerHTML = '10';  
+        //   } else {
+        //     inputProtectFrom.innerHTML = '0';  
+        //   }
+        // }
+      },
+    });
 let protectCurrentValue = 0;
 
 sendProtect.addEventListener("click", () => {
@@ -715,24 +726,9 @@ sendProtect.addEventListener("click", () => {
   // 1️⃣ Lưu vào biến
   protectCurrentValue = fromValue;
 
-  // 2️⃣ Gửi lên ERA Cloud
-  // eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
-
-  // 3️⃣ Hiển thị lên giao diện
-  protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
 
   console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
 });
-        // if (newProtectFrom !== fromValue) {
-        //   newSProtectFrom = fromValue;
-        //   if (fromValue === 1) {
-        //     inputProtectFrom.innerHTML = '10';  
-        //   } else {
-        //     inputProtectFrom.innerHTML = '0';  
-        //   }
-        // }
-      },
-    });
     turnOnrelay1.addEventListener('click', () => {
       eraWidget.triggerAction(actions1[0]?.action, null);
     });
