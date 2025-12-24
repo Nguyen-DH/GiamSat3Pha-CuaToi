@@ -761,22 +761,22 @@ if (valueProtect != null) {
     });
 sendProtect.addEventListener("click", () => {
   const value = parseFloat(inputProtectFrom.value);
-  eraWidget.triggerAction(
-    actions9[0]?.action,
-    value   // 🔥 CHÍNH DÒNG NÀY
-  );
+
   if (isNaN(value) || value <= 0) {
     alert("Nhập dòng hợp lệ");
     return;
   }
 
-  // ✅ GỬI GIÁ TRỊ QUA ACTION
- 
+  // ✅ GỬI ACTION KÈM PAYLOAD
+  eraWidget.triggerAction(
+    actions9[0].action,
+    value
+  );
 
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
-
-  console.log("Đã gửi dòng bảo vệ qua ACTION:", value);
+  console.log("Đã gửi dòng bảo vệ:", value);
 });
+
 
   </script>
 </body>
