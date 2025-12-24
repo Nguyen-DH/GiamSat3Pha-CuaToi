@@ -436,7 +436,7 @@
       maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
       maxActionsCount: 17,                /* Số lượng tối đa các hành động có thể kích hoạt */
-      minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
+      minRealtimeConfigsCount: 10,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
       needRealtimeConfigs: true,
@@ -771,7 +771,7 @@ sendProtect.addEventListener("click", () => {
   }
 
   // ✅ GỬI GIÁ TRỊ QUA ACTION
- 
+ eraWidget.updateRealtimeConfig(configProtectFrom.id, value); 
 
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
 
