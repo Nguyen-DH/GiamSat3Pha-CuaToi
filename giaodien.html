@@ -523,12 +523,12 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        
-     //   const fromValue = values[configProtectFrom.id].value;
+const valueProtect = values[configProtectFrom.id].value;
 
-//protectValueDisplay.innerHTML = fromValue + " A";
-// inputProtectFrom.value = fromValue;
-
+if (valueProtect !== undefined && valueProtect !== null) {
+  protectValueDisplay.innerHTML = parseFloat(valueProtect).toFixed(1) + " A";
+  inputProtectFrom.value = parseFloat(valueProtect).toFixed(1);
+}        
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
@@ -759,22 +759,32 @@ function formatValue(v) {
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
-    sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, 10);
-      const fromValue = inputProtectFrom.value;
-      if (fromValue === "") {
-        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
-        return;
-      }
-      
-// eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
-configProtectFrom = protectValueDisplay.value;
-protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
-      //  Cập nhật realtime config — gửi lên ERA Cloud
+sendProtect.addEventListener("click", () => {
+  const fromValue = parseFloat(inputProtectFrom.value.trim());
 
-      //  Log ra console để dễ kiểm tra
-      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
-    });
+  // Kiểm tra hợp lệ
+  if (isNaN(fromValue) || fromValue <= 0) {
+    alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
+    return;
+  }
+
+  // 1️⃣ Gửi giá trị lên ERA (lưu realtime config)
+  eraWidget.updateRealtimeConfig(
+    configProtectFrom.id,
+    fromValue
+  );
+
+  // 2️⃣ Trigger action để đẩy xuống ESP / STM
+  eraWidget.triggerAction(
+    actions9[0]?.action,
+    { value: fromValue }
+  );
+
+  // 3️⃣ Hiển thị ngay trên giao diện
+  protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
+
+  console.log("Đã gửi dòng bảo vệ:", fromValue, "A");
+});
 // let protectCurrentValue = 0;
 
 // sendProtect.addEventListener("click", () => {
