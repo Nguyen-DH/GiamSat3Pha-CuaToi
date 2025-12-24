@@ -526,9 +526,9 @@ function formatValue(v) {
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
         // inputProtectFrom.value = fromValue;
-//         const inputProtectFrom = values[configProtectFrom.id].value;
+        const inputProtectFrom = values[configProtectFrom.id].value;
 
-// protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
+protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
 
 
         // Cập nhật giao diện người dùng với giá trị mới
@@ -561,10 +561,7 @@ function formatValue(v) {
           Number(formatValue(valueCurrentB).replace(",",".")));
         gaugeSC.series[0].points[0].update(
           Number(formatValue(valueCurrentC).replace(",",".")));
-if (sendProtect === 1){
-const inputProtectFrom = values[configProtectFrom.id].value;
-protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
-}
+
         if (newStatusLed1 !== valueLed1) {
           newStatusLed1 = valueLed1;
           const relayBox1 = document.getElementById('relayBox1');
@@ -764,13 +761,18 @@ protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
     sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, null );
+      eraWidget.triggerAction(actions9[0]?.action, null);
 
       if (inputProtectFrom === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
         return;
       }
 
+      //  Cập nhật realtime config — gửi lên ERA Cloud
+      eraWidget.updateRealtimeConfig(configProtectFrom.id, inputProtectFrom);
+
+      //  Log ra console để dễ kiểm tra
+      console.log("Đã gửi giá trị bảo vệ lên ERA:", inputProtectFrom);
     });
 
 
