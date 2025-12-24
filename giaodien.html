@@ -243,17 +243,27 @@
 
     <!-- Temperature and Protect Configuration Row -->
     <div class="temp-protect-row">
-      <div class="protect-card">
-        <h5 class="text-primary">CẤU HÌNH DÒNG ĐIỆN BẢO VỆ</h5>
-        <p class="text-muted">Nhập giá trị dòng điện ngưỡng (A) áp dụng cho cả 3 pha</p>
-        <input type="number" id="protectAll" placeholder="Nhập giá trị (A)" min="0" step="0.1">
-        <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
-<p class="mt-2 text-muted">
-  Dòng bảo vệ đang áp dụng:
-  <strong id="protectValueDisplay" class="text-danger">-- A</strong>
-</p>
-        
-      </div>
+<div class="protect-card">
+  <h5 class="text-primary">CẤU HÌNH DÒNG BẢO VỆ</h5>
+
+  <input 
+    type="number" 
+    id="protectAll"
+    min="0"
+    step="0.1"
+    placeholder="Nhập dòng bảo vệ (A)"
+    class="form-control text-center"
+  />
+
+  <button id="sendProtect" class="btn btn-success mt-2">
+    Gửi xuống thiết bị
+  </button>
+
+  <p class="mt-2 text-muted">
+    Giá trị đang áp dụng:
+    <strong id="protectValueDisplay" class="text-danger">-- A</strong>
+  </p>
+</div>
       <div class="header-right">
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
         <div class="flex-center">
@@ -525,8 +535,10 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
+        
         const fromValue = values[configProtectFrom.id].value;
-
+        protectValueDisplay.innerHTML = parseFloat(fromValue).toFixed(1) + " A";
+        inputProtectFrom.value = fromValue;
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
@@ -542,6 +554,7 @@ function formatValue(v) {
         cosA.innerHTML = formatValue(valueCosA);
         cosB.innerHTML = formatValue(valueCosB);
         cosC.innerHTML = formatValue(valueCosC);
+
 
         gaugeA.series[0].points[0].update(
           Number(formatValue(valueVoltA).replace(",",".")));
@@ -764,20 +777,25 @@ function formatValue(v) {
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
-    sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, null);
-      const fromValue = inputProtectFrom.value.trim();
-      if (fromValue === "") {
-        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
-        return;
-      }
+sendProtect.addEventListener("click", () => {
+  const value = parseFloat(inputProtectFrom.value);
 
-      //  Cập nhật realtime config — gửi lên ERA Cloud
-      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+  if (isNaN(value) || value <= 0) {
+    alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
+    return;
+  }
 
-      //  Log ra console để dễ kiểm tra
-      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
-    });
+  // Lưu realtime config
+  eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
+
+  // Trigger action đẩy xuống ESP/STM
+  eraWidget.triggerAction(actions9[0]?.action, { value });
+
+  // Cập nhật UI
+  protectValueDisplay.innerHTML = value.toFixed(1) + " A";
+
+  console.log("Đã gửi dòng bảo vệ:", value);
+});
 // let protectCurrentValue = 0;
 
 // sendProtect.addEventListener("click", () => {
