@@ -761,7 +761,7 @@ protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
     sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, null);
+      eraWidget.triggerAction(actions9[0]?.action, {inputProtectFrom} );
 
       if (inputProtectFrom === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
