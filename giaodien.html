@@ -243,27 +243,17 @@
 
     <!-- Temperature and Protect Configuration Row -->
     <div class="temp-protect-row">
-<div class="protect-card">
-  <h5 class="text-primary">CẤU HÌNH DÒNG BẢO VỆ</h5>
-
-  <input 
-    type="number" 
-    id="protectAll"
-    min="0"
-    step="0.1"
-    placeholder="Nhập dòng bảo vệ (A)"
-    class="form-control text-center"
-  />
-
-  <button id="sendProtect" class="btn btn-success mt-2">
-    Gửi xuống thiết bị
-  </button>
-
-  <p class="mt-2 text-muted">
-    Giá trị đang áp dụng:
-    <strong id="protectValueDisplay" class="text-danger">-- A</strong>
-  </p>
-</div>
+      <div class="protect-card">
+        <h5 class="text-primary">CẤU HÌNH DÒNG ĐIỆN BẢO VỆ</h5>
+        <p class="text-muted">Nhập giá trị dòng điện ngưỡng (A) áp dụng cho cả 3 pha</p>
+        <input type="number" id="protectAll" placeholder="Nhập giá trị (A)" min="0" step="0.1">
+        <button id="sendProtect" class="btn btn-success">Xác Nhận</button>
+<p class="mt-2 text-muted">
+  Dòng bảo vệ đang áp dụng:
+  <strong id="protectValueDisplay" class="text-danger">-- A</strong>
+</p>
+        
+      </div>
       <div class="header-right">
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
         <div class="flex-center">
@@ -436,7 +426,7 @@
     let configLed6 = null, newStatusLed6 = null, actions6 = [];
     let configLed7 = null, newStatusLed7 = null, actions7 = [];
     let configLed8 = null, newStatusLed8 = null, actions8 = [];
-    let configProtectFrom = null,   actions9 = [];
+    let configProtectFrom = null, newSProtectFrom = null, actions9 = [];
 
     const eraWidget = new EraWidget();
     eraWidget.init({
@@ -506,9 +496,9 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
       onValues: (values) => {
         // Cập nhật giá trị nhận được
         //  từ widget
-          function formatValue(v) {
-            return parseFloat(v).toFixed(2).replace(".", ",");
-          }
+function formatValue(v) {
+  return parseFloat(v).toFixed(2).replace(".", ",");
+}
         const valuePower1 = values[configPower1.id].value;
         const valuePower2 = values[configPower2.id].value;
         const valuePower3 = values[configPower3.id].value;
@@ -523,7 +513,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         const valueCurrentA=values[configCurrentA.id].value;
         const valueCurrentB=values[configCurrentB.id].value;
         const valueCurrentC=values[configCurrentC.id].value;  
-
+        // const valueprotectAll = values[configprotectAll.id].value;
         const valueLed1 = values[configLed1.id].value;
         const valueLed2 = values[configLed2.id].value;
         const valueLed3 = values[configLed3.id].value;
@@ -535,10 +525,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        // gui dong gioi han
-        inputProtectFrom.value = fromValue;
         const fromValue = values[configProtectFrom.id].value;
-        protectValueDisplay.innerHTML = formatValueZ(fromValue) + " A";
 
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
@@ -555,7 +542,6 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         cosA.innerHTML = formatValue(valueCosA);
         cosB.innerHTML = formatValue(valueCosB);
         cosC.innerHTML = formatValue(valueCosC);
-
 
         gaugeA.series[0].points[0].update(
           Number(formatValue(valueVoltA).replace(",",".")));
@@ -716,6 +702,14 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
             relayBox8.classList.remove('on');
           }
         }
+        if (newProtectFrom !== fromValue) {
+          newSProtectFrom = fromValue;
+          if (fromValue === 1) {
+            inputProtectFrom.innerHTML = '10';  
+          } else {
+            inputProtectFrom.innerHTML = '0';  
+          }
+        }
       },
     });
     turnOnrelay1.addEventListener('click', () => {
@@ -770,25 +764,20 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
-sendProtect.addEventListener("click", () => {
-  const value = formatValue(inputProtectFrom.value);
+    sendProtect.addEventListener("click", () => {
+      eraWidget.triggerAction(actions9[0]?.action, null);
+      const fromValue = inputProtectFrom.value.trim();
+      if (fromValue === "") {
+        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
+        return;
+      }
 
-  if (isNaN(value) || value <= 0) {
-    alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
-    return;
-  }
+      //  Cập nhật realtime config — gửi lên ERA Cloud
+      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
 
-  // Lưu realtime config
-  eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
-
-  // Trigger action đẩy xuống ESP/STM
-  eraWidget.triggerAction(actions9[1]?.action, { value });
-
-  // Cập nhật UI
-  protectValueDisplay.innerHTML = formatValue(value) + " A";
-
-  console.log("Đã gửi dòng bảo vệ:", value);
-});
+      //  Log ra console để dễ kiểm tra
+      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
+    });
 // let protectCurrentValue = 0;
 
 // sendProtect.addEventListener("click", () => {
