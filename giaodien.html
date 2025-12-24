@@ -469,9 +469,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         configProtectFrom = configuration.realtime_configs[17];
         configTempESP32 = configuration.realtime_configs[18];
         configTempSTM = configuration.realtime_configs[19];
-        // const configVoltA = configuration.realtime_configs.find(x => x.key === "V_A");
-        // const configVoltB = configuration.realtime_configs.find(x => x.key === "V_B");
-        // const configVoltC = configuration.realtime_configs.find(x => x.key === "V_C");
+ 
         configVoltA=configuration.realtime_configs[20];
         configVoltB=configuration.realtime_configs[21];
         configVoltC=configuration.realtime_configs[22];
@@ -535,7 +533,7 @@ function formatValue(v) {
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
         power3.innerHTML = formatValue(valuePower3) + ' W';
-protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
+
         powerS1.innerHTML = formatValue(valueS1POWER) + ' Hz';
         powerS2.innerHTML = formatValue(valueS2POWER) + ' Hz';
         powerS3.innerHTML = formatValue(valueS3POWER) + ' Hz';
@@ -762,15 +760,15 @@ protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
     sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, null);
-      const fromValue = inputProtectFrom.value.trim();
+      eraWidget.triggerAction(actions9[0]?.action, { fromValue });
+      const fromValue = inputProtectFrom.value;
       if (fromValue === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
         return;
       }
       
-eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
-
+// eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+configProtectFrom = protectValueDisplay.value;
 protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
       //  Cập nhật realtime config — gửi lên ERA Cloud
 
