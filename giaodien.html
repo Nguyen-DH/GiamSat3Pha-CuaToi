@@ -476,7 +476,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         configCurrentA=configuration.realtime_configs[23];
         configCurrentB=configuration.realtime_configs[24];
         configCurrentC=configuration.realtime_configs[25];
-       newSProtectFrom = configuration.realtime_configs[26];
+
         actions1 = configuration.actions.slice(0, 2);
         actions2 = configuration.actions.slice(2, 4);
         actions3 = configuration.actions.slice(4, 6);
@@ -526,9 +526,9 @@ function formatValue(v) {
         const inputProtectFrom = values[newSProtectFrom.id].value
 const valueProtect = values[configProtectFrom.id].value;
 
-if (valueProtect != value) {
+
   protectValueDisplay.innerHTML =parseFloat(valueProtect).toFixed(1) + " A";
-}       
+      
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
