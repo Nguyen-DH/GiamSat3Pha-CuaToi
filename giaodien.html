@@ -526,9 +526,9 @@ function formatValue(v) {
         // const inputProtectFrom = values[newSProtectFrom.id].value
 const valueProtect = values[configProtectFrom.id].value;
 
-
+if (valueProtect != value) {
   protectValueDisplay.innerHTML =parseFloat(valueProtect).toFixed(1) + " A";
-
+}       
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
@@ -761,22 +761,22 @@ const valueProtect = values[configProtectFrom.id].value;
     });
 sendProtect.addEventListener("click", () => {
   const value = parseFloat(inputProtectFrom.value);
-
+  eraWidget.triggerAction(
+    actions9[0]?.action,
+    value   // 🔥 CHÍNH DÒNG NÀY
+  );
   if (isNaN(value) || value <= 0) {
     alert("Nhập dòng hợp lệ");
     return;
   }
 
-  // ✅ GỬI ACTION KÈM PAYLOAD
-  eraWidget.triggerAction(
-    actions9[0].action,
-    value
-  );
+  // ✅ GỬI GIÁ TRỊ QUA ACTION
+ 
 
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
-  console.log("Đã gửi dòng bảo vệ:", value);
-});
 
+  console.log("Đã gửi dòng bảo vệ qua ACTION:", value);
+});
 
   </script>
 </body>
