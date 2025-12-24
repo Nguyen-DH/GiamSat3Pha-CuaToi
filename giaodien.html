@@ -761,7 +761,7 @@ protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
     sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, inputProtectFrom);
+      eraWidget.triggerAction(actions9[0]?.action, {inputProtectFrom} );
 
       if (inputProtectFrom === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
@@ -770,9 +770,8 @@ protectValueDisplay.innerHTML = formatValue(inputProtectFrom) + " A";
 
       //  Cập nhật realtime config — gửi lên ERA Cloud
       eraWidget.updateRealtimeConfig(configProtectFrom.id, inputProtectFrom);
+      protectValueDisplay.innerHTML =  inputProtectFrom + " A";
 
-      //  Log ra console để dễ kiểm tra
-      console.log("Đã gửi giá trị bảo vệ lên ERA:", inputProtectFrom);
     });
 
 
