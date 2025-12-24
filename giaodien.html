@@ -767,33 +767,41 @@ inputProtectFrom.value = fromValue;
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
-    // sendProtect.addEventListener("click", () => {
-    //   eraWidget.triggerAction(actions9[0]?.action, null);
-    //   const fromValue = inputProtectFrom.value.trim();
-    //   if (fromValue === "") {
-    //     alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
-    //     return;
-    //   }
+    sendProtect.addEventListener("click", () => {
+      eraWidget.triggerAction(actions9[0]?.action, null);
+      const fromValue = inputProtectFrom.value.trim();
+      if (fromValue === "") {
+        alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
+        return;
+      }
 
-    //   //  Cập nhật realtime config — gửi lên ERA Cloud
-    //   eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+      //  Cập nhật realtime config — gửi lên ERA Cloud
+      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
 
-    //   //  Log ra console để dễ kiểm tra
-    //   console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
-    // });
-sendProtect.addEventListener("click", () => {
-  const value = formatValue(inputProtectFrom.value);
+      //  Log ra console để dễ kiểm tra
+      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
+    });
+// let protectCurrentValue = 0;
 
-  if (isNaN(value) || value <= 0) {
-    alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
-    return;
-  }
+// sendProtect.addEventListener("click", () => {
+//   const fromValue = parseFloat(inputProtectFrom.value);
 
-  eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
-  eraWidget.triggerAction(actions9[0]?.action, { value });
+//   if (isNaN(fromValue) || fromValue <= 0) {
+//     alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
+//     return;
+//   }
 
-  protectValueDisplay.innerHTML = formatValue(value) + " A";
-});
+//   // 1️⃣ Lưu vào biến
+//   protectCurrentValue = fromValue;
+
+//   // 2️⃣ Gửi lên ERA Cloud
+//   eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
+
+//   // 3️⃣ Hiển thị lên giao diện
+//   protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
+
+//   console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
+// });
 
   </script>
 </body>
