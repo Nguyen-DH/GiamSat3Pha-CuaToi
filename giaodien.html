@@ -525,8 +525,8 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        inputProtectFrom.value = fromValue;
-        const fromValue = values[configProtectFrom.id].value;
+inputProtectFrom.value = fromValue;
+const fromValue = values[configProtectFrom.id].value;
 
 protectValueDisplay.innerHTML = formatValue(fromValue) + " A";
 
@@ -784,7 +784,7 @@ protectValueDisplay.innerHTML = formatValue(fromValue) + " A";
     // });
 sendProtect.addEventListener("click", () => {
   
-eraWidget.triggerAction(actions9[1]?.action, { value });
+eraWidget.triggerAction(actions9[0]?.action, { value });
 const value = formatValue(inputProtectFrom.value);
   if (isNaN(value) || value <= 0) {
     alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
