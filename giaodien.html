@@ -777,7 +777,7 @@ sendProtect.addEventListener("click", () => {
   // 2️⃣ Trigger action để đẩy xuống ESP / STM
   eraWidget.triggerAction(
     actions9[0]?.action,
-    { value: fromValue }
+    null
   );
 
   // 3️⃣ Hiển thị ngay trên giao diện
@@ -785,28 +785,6 @@ sendProtect.addEventListener("click", () => {
 
   console.log("Đã gửi dòng bảo vệ:", fromValue, "A");
 });
-// let protectCurrentValue = 0;
-
-// sendProtect.addEventListener("click", () => {
-//   const fromValue = parseFloat(inputProtectFrom.value);
-
-//   if (isNaN(fromValue) || fromValue <= 0) {
-//     alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
-//     return;
-//   }
-
-//   // 1️⃣ Lưu vào biến
-//   protectCurrentValue = fromValue;
-
-//   // 2️⃣ Gửi lên ERA Cloud
-//   eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
-
-//   // 3️⃣ Hiển thị lên giao diện
-//   protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
-
-//   console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
-// });
-
   </script>
 </body>
 </html>
