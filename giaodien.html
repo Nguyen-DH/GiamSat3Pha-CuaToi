@@ -715,14 +715,6 @@ function formatValue(v) {
             relayBox8.classList.remove('on');
           }
         }
-        if (newProtectFrom !== fromValue) {
-          newSProtectFrom = fromValue;
-          if (fromValue === 1) {
-            inputProtectFrom.innerHTML = '10';  
-          } else {
-            inputProtectFrom.innerHTML = '0';  
-          }
-        }
       },
     });
     turnOnrelay1.addEventListener('click', () => {
