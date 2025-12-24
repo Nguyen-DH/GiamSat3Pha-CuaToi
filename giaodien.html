@@ -526,7 +526,7 @@ function formatValue(v) {
         // const inputProtectFrom = values[newSProtectFrom.id].value
 const valueProtect = values[configProtectFrom.id].value;
 
-if(valueProtect != null ){
+if(valueProtect !== value ){
   protectValueDisplay.innerHTML =parseFloat(valueProtect).toFixed(1) + " A";
 };
   
@@ -776,7 +776,7 @@ sendProtect.addEventListener("click", () => {
   // ✅ GỬI GIÁ TRỊ QUA ACTION
  
 
-  // protectValueDisplay.innerHTML = value.toFixed(1) + " A";
+  protectValueDisplay.innerHTML = value.toFixed(1) + " A";
 
   console.log("Đã gửi dòng bảo vệ qua ACTION:", value);
 });
