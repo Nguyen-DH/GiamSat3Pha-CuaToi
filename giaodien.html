@@ -433,9 +433,9 @@
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
       needHistoryConfigs: true,          /* Cần giá trị lịch sử */
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
-      maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
+      maxRealtimeConfigsCount: 27,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 16,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 17,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
@@ -476,7 +476,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         configCurrentA=configuration.realtime_configs[23];
         configCurrentB=configuration.realtime_configs[24];
         configCurrentC=configuration.realtime_configs[25];
-       
+       newSProtectFrom = configuration.realtime_configs[26];
         actions1 = configuration.actions.slice(0, 2);
         actions2 = configuration.actions.slice(2, 4);
         actions3 = configuration.actions.slice(4, 6);
@@ -485,7 +485,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         actions6 = configuration.actions.slice(10, 12);
         actions7 = configuration.actions.slice(12, 14);
         actions8 = configuration.actions.slice(14, 16);
-        actions9 = configuration.actions.slice(16);
+        actions9 = configuration.actions.slice(16, 17);
 
 
       },
@@ -523,6 +523,7 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
+        const inputProtectFrom = values[newSProtectFrom.id].value;
 const valueProtect = values[configProtectFrom.id].value;
 
 if (valueProtect != null) {
