@@ -525,14 +525,12 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        // inputProtectFrom.value = fromValue;
-        const inputProtectFrom = values[configProtectFrom.id].value;
+        const fromValue = values[configProtectFrom.id].value;
 
-
-
+protectValueDisplay.innerHTML = formatValue(fromValue) + " A";
+inputProtectFrom.value = fromValue;
 
         // Cập nhật giao diện người dùng với giá trị mới
-        protectValueDisplay.innerHTML = inputProtectFrom + " A";
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
         power3.innerHTML = formatValue(valuePower3) + ' W';
@@ -707,6 +705,14 @@ function formatValue(v) {
             relayBox8.classList.remove('on');
           }
         }
+        if (newProtectFrom !== fromValue) {
+          newSProtectFrom = fromValue;
+          if (fromValue === 1) {
+            inputProtectFrom.innerHTML = '10';  
+          } else {
+            inputProtectFrom.innerHTML = '0';  
+          }
+        }
       },
     });
     turnOnrelay1.addEventListener('click', () => {
@@ -763,16 +769,39 @@ function formatValue(v) {
     });
     sendProtect.addEventListener("click", () => {
       eraWidget.triggerAction(actions9[0]?.action, null);
-      protectValueDisplay = inputProtectFrom;
-      if (inputProtectFrom === "") {
+      const fromValue = inputProtectFrom.value.trim();
+      if (fromValue === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
         return;
       }
 
+      //  Cập nhật realtime config — gửi lên ERA Cloud
+      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+
       //  Log ra console để dễ kiểm tra
-
+      console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
     });
+// let protectCurrentValue = 0;
 
+// sendProtect.addEventListener("click", () => {
+//   const fromValue = parseFloat(inputProtectFrom.value);
+
+//   if (isNaN(fromValue) || fromValue <= 0) {
+//     alert("Vui lòng nhập dòng hợp lệ (ví dụ: 5 hoặc 10)");
+//     return;
+//   }
+
+//   // 1️⃣ Lưu vào biến
+//   protectCurrentValue = fromValue;
+
+//   // 2️⃣ Gửi lên ERA Cloud
+//   eraWidget.updateRealtimeConfig(configProtectFrom.id, protectCurrentValue);
+
+//   // 3️⃣ Hiển thị lên giao diện
+//   protectValueDisplay.innerHTML = protectCurrentValue.toFixed(1) + " A";
+
+//   console.log("Dòng bảo vệ đã gửi:", protectCurrentValue, "A");
+// });
 
   </script>
 </body>
