@@ -528,7 +528,7 @@ function formatValue(v) {
         const fromValue = values[configProtectFrom.id].value;
 
 protectValueDisplay.innerHTML = fromValue + " A";
-inputProtectFrom.value = fromValue;
+// inputProtectFrom.value = fromValue;
 
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
@@ -767,9 +767,11 @@ inputProtectFrom.value = fromValue;
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
         return;
       }
-
+      
+eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
+eraWidget.triggerAction(actions9[0]?.action, { fromValue });
+protectValueDisplay.innerHTML = fromValue.toFixed(1) + " A";
       //  Cập nhật realtime config — gửi lên ERA Cloud
-      eraWidget.updateRealtimeConfig(configProtectFrom.id, fromValue);
 
       //  Log ra console để dễ kiểm tra
       console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
