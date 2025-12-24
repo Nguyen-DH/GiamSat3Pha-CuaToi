@@ -790,7 +790,7 @@ sendProtect.addEventListener("click", () => {
   }
 
   eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
-  eraWidget.triggerAction(actions9[0]?.action, { value });
+  eraWidget.triggerAction(actions9[1]?.action, { value });
 
   protectValueDisplay.innerHTML = formatValue(value) + " A";
 });
