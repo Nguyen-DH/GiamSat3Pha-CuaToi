@@ -436,7 +436,7 @@
     let configLed6 = null, newStatusLed6 = null, actions6 = [];
     let configLed7 = null, newStatusLed7 = null, actions7 = [];
     let configLed8 = null, newStatusLed8 = null, actions8 = [];
-    let configProtectFrom = null, newSProtectFrom = null, actions9 = [];
+    let configProtectFrom = null,   actions9 = [];
 
     const eraWidget = new EraWidget();
     eraWidget.init({
@@ -506,9 +506,9 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
       onValues: (values) => {
         // Cập nhật giá trị nhận được
         //  từ widget
-function formatValue(v) {
-  return parseFloat(v).toFixed(2).replace(".", ",");
-}
+          function formatValue(v) {
+            return parseFloat(v).toFixed(2).replace(".", ",");
+          }
         const valuePower1 = values[configPower1.id].value;
         const valuePower2 = values[configPower2.id].value;
         const valuePower3 = values[configPower3.id].value;
@@ -523,7 +523,7 @@ function formatValue(v) {
         const valueCurrentA=values[configCurrentA.id].value;
         const valueCurrentB=values[configCurrentB.id].value;
         const valueCurrentC=values[configCurrentC.id].value;  
-        // const valueprotectAll = values[configprotectAll.id].value;
+
         const valueLed1 = values[configLed1.id].value;
         const valueLed2 = values[configLed2.id].value;
         const valueLed3 = values[configLed3.id].value;
@@ -535,10 +535,11 @@ function formatValue(v) {
         const valueCosA = values[configCosA.id].value;
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
-        
-        const fromValue = values[configProtectFrom.id].value;
-        protectValueDisplay.innerHTML = parseFloat(fromValue).toFixed(1) + " A";
+        // gui dong gioi han
         inputProtectFrom.value = fromValue;
+        const fromValue = values[configProtectFrom.id].value;
+        protectValueDisplay.innerHTML = formatValueZ(fromValue) + " A";
+
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
@@ -770,7 +771,7 @@ function formatValue(v) {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
 sendProtect.addEventListener("click", () => {
-  const value = parseFloat(inputProtectFrom.value);
+  const value = formatValue(inputProtectFrom.value);
 
   if (isNaN(value) || value <= 0) {
     alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
@@ -781,10 +782,10 @@ sendProtect.addEventListener("click", () => {
   eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
 
   // Trigger action đẩy xuống ESP/STM
-  eraWidget.triggerAction(actions9[0]?.action, { value });
+  eraWidget.triggerAction(actions9[1]?.action, { value });
 
   // Cập nhật UI
-  protectValueDisplay.innerHTML = value.toFixed(1) + " A";
+  protectValueDisplay.innerHTML = formatValue(value) + " A";
 
   console.log("Đã gửi dòng bảo vệ:", value);
 });
