@@ -760,7 +760,7 @@ function formatValue(v) {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
     sendProtect.addEventListener("click", () => {
-      eraWidget.triggerAction(actions9[0]?.action, { fromValue });
+      eraWidget.triggerAction(actions9[0]?.action, 10);
       const fromValue = inputProtectFrom.value;
       if (fromValue === "") {
         alert("Vui lòng nhập giá trị (ví dụ: 10 hoặc 0)");
