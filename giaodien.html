@@ -527,7 +527,7 @@ function formatValue(v) {
         const valueCosC = values[configCosC.id].value;
         const fromValue = values[configProtectFrom.id].value;
 
-protectValueDisplay.innerHTML = formatValue(fromValue) + " A";
+protectValueDisplay.innerHTML = fromValue + " A";
 inputProtectFrom.value = fromValue;
 
         // Cập nhật giao diện người dùng với giá trị mới
@@ -705,14 +705,7 @@ inputProtectFrom.value = fromValue;
             relayBox8.classList.remove('on');
           }
         }
-        if (newProtectFrom !== fromValue) {
-          newSProtectFrom = fromValue;
-          if (fromValue === 1) {
-            inputProtectFrom.innerHTML = '10';  
-          } else {
-            inputProtectFrom.innerHTML = '0';  
-          }
-        }
+
       },
     });
     turnOnrelay1.addEventListener('click', () => {
