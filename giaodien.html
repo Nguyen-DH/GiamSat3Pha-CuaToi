@@ -525,10 +525,10 @@ function formatValue(v) {
         const valueCosC = values[configCosC.id].value;
 const valueProtect = values[configProtectFrom.id].value;
 
-if (valueProtect !== undefined && valueProtect !== null) {
-  protectValueDisplay.innerHTML = parseFloat(valueProtect).toFixed(1) + " A";
-  inputProtectFrom.value = parseFloat(valueProtect).toFixed(1);
-}        
+if (valueProtect != null) {
+  protectValueDisplay.innerHTML =
+    parseFloat(valueProtect).toFixed(1) + " A";
+}       
         // Cập nhật giao diện người dùng với giá trị mới
         power1.innerHTML = formatValue(valuePower1) + ' W';
         power2.innerHTML = formatValue(valuePower2) + ' W';
