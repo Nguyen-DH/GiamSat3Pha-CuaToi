@@ -782,7 +782,7 @@ inputProtectFrom.value = fromValue;
     //   console.log("Đã gửi giá trị bảo vệ lên ERA:", fromValue);
     // });
 sendProtect.addEventListener("click", () => {
-  const value = parseFloat(inputProtectFrom.value);
+  const value = formatValue(inputProtectFrom.value);
 
   if (isNaN(value) || value <= 0) {
     alert("Vui lòng nhập dòng hợp lệ (VD: 5 hoặc 10)");
@@ -792,7 +792,7 @@ sendProtect.addEventListener("click", () => {
   eraWidget.updateRealtimeConfig(configProtectFrom.id, value);
   eraWidget.triggerAction(actions9[0]?.action, { value });
 
-  protectValueDisplay.innerHTML = value.toFixed(1) + " A";
+  protectValueDisplay.innerHTML = formatValue(value) + " A";
 });
 
   </script>
