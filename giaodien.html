@@ -777,10 +777,10 @@ sendProtect.addEventListener("click", () => {
   isSendingProtect = true;
 
   eraWidget.triggerAction(actions9[0]?.action, value);
-  eraWidget.updateRealtimeConfig(
-    configProtectFrom.id,
-    value
-  );
+  // eraWidget.updateRealtimeConfig(
+  //   configProtectFrom.id,
+  //   value
+  // );
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
 });
 
