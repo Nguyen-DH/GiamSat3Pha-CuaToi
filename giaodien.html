@@ -529,10 +529,6 @@ const valueProtect = values[configProtectFrom.id].value;
 if (!isSendingProtect && valueProtect !== null) {
   protectValueDisplay.innerHTML =
     parseFloat(valueProtect).toFixed(1) + " A";
-  eraWidget.updateRealtimeConfig(
-    configProtectFrom.id,
-    value
-  );
 }
 
 // Khi server trả đúng giá trị → mở khóa
