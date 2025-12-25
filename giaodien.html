@@ -526,9 +526,16 @@ function formatValue(v) {
         // const inputProtectFrom = values[newSProtectFrom.id].value
 const valueProtect = values[configProtectFrom.id].value;
 
-if(valueProtect !== null ){
-  protectValueDisplay.innerHTML =parseFloat(valueProtect).toFixed(1) + " A";
-};
+if (!isSendingProtect && valueProtect !== null) {
+  protectValueDisplay.innerHTML =
+    parseFloat(valueProtect).toFixed(1) + " A";
+}
+
+// Khi server trả đúng giá trị → mở khóa
+if (isSendingProtect && valueProtect == inputProtectFrom.value) {
+  isSendingProtect = false;
+}
+
   
       
         // Cập nhật giao diện người dùng với giá trị mới
@@ -761,25 +768,19 @@ if(valueProtect !== null ){
     turnOffrelay8.addEventListener('click', () => {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
+let isSendingProtect = false;
+
 sendProtect.addEventListener("click", () => {
   const value = parseFloat(inputProtectFrom.value);
+  if (isNaN(value) || value <= 0) return;
 
-  if (isNaN(value) || value <= 0) {
-    alert("Nhập dòng hợp lệ");
-    return;
-  }
-    eraWidget.triggerAction(
-    actions9[0]?.action,
-    value   // 🔥 CHÍNH DÒNG NÀY
-  );
+  isSendingProtect = true;
 
-  // ✅ GỬI GIÁ TRỊ QUA ACTION
- 
+  eraWidget.triggerAction(actions9[0]?.action, value);
 
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
-
-  console.log("Đã gửi dòng bảo vệ qua ACTION:", value);
 });
+
 
   </script>
 </body>
