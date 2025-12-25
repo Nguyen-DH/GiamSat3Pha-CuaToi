@@ -236,7 +236,7 @@
       </div>
       <div class="header-center">
         <h2 class="project-title">THIẾT KẾ & THI CÔNG MÔ HÌNH HỆ THÔNG GIÁM SÁT ĐIỆN 3 PHA </h2>
-        <p class="project-info"><strong>GVHD:</strong>ThS. Nguyễn Văn Bình</p>
+        <p class="project-info"><strong>GVHD:</strong>Th.S Nguyễn Văn Bình</p>
         <p class="project-info"><strong>SVTH:</strong><br>Lê Phước Nguyên — MSSV: 2225202160006<br>Nguyễn Huỳnh Ngọc Điền — MSSV: 2225202160107</p>
       </div>
     </div>
@@ -529,6 +529,7 @@ const valueProtect = values[configProtectFrom.id].value;
 if (!isSendingProtect && valueProtect !== null) {
   protectValueDisplay.innerHTML =
     parseFloat(valueProtect).toFixed(1) + " A";
+    update(Number(valueProtect));
 }
 
 // Khi server trả đúng giá trị → mở khóa
@@ -781,10 +782,7 @@ sendProtect.addEventListener("click", () => {
 
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
 });
-  eraWidget.updateRealtimeConfig(
-    configProtectFrom.id,
-    value
-  );
+
 
   </script>
 </body>
