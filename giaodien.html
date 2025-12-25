@@ -249,24 +249,36 @@
   <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap;">
 
     <!-- ===== DÒNG ===== -->
-    <div>
-      <p class="text-muted mb-1">Dòng (A)</p>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <button id="btnDown" class="btn btn-outline-danger">−</button>
-        <strong id="protectValueDisplay" style="font-size:20px;">-- A</strong>
-        <button id="btnUp" class="btn btn-outline-success">+</button>
-      </div>
+    <div style="min-width:260px;">
+      <p class="text-muted mb-1">Dòng bảo vệ (A)</p>
+      <input
+        type="range"
+        id="protectCurrentSlider"
+        min="0"
+        max="10"
+        step="0.1"
+        value="0"
+        style="width:100%;">
+      <strong id="protectValueDisplay" style="font-size:18px;">0.0 A</strong>
     </div>
 
     <!-- ===== ÁP ===== -->
-    <div>
-      <p class="text-muted mb-1">Áp (V)</p>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <button id="btnVDown" class="btn btn-outline-danger">−</button>
-        <strong id="protectVoltDisplay" style="font-size:20px;">-- V</strong>
-        <button id="btnVUp" class="btn btn-outline-success">+</button>
-      </div>
+    <div style="min-width:260px;">
+      <p class="text-muted mb-1">Áp bảo vệ (V)</p>
+      <input
+        type="range"
+        id="protectVoltSlider"
+        min="0"
+        max="250"
+        step="1"
+        value="0"
+        style="width:100%;">
+      <strong id="protectVoltDisplay" style="font-size:18px;">0 V</strong>
     </div>
+
+  
+
+
 
  
 </div>
@@ -437,61 +449,9 @@ const btnDown = document.getElementById("btnDown");
 const btnVUp = document.getElementById("btnVUp");
 const btnVDown = document.getElementById("btnVDown");
 const protectVoltDisplay = document.getElementById("protectVoltDisplay");
-function applyProtectValue() {
-  isSendingProtect = true;
+const protectCurrentSlider = document.getElementById("protectCurrentSlider");
+const protectVoltSlider = document.getElementById("protectVoltSlider");
 
-  // gửi action cho ESP32
-  eraWidget.triggerAction(actions9[0]?.action, null);
-
-  // ghi realtime config cho ERA
-  eraWidget.updateRealtimeConfig(
-    configProtectFrom.id,
-    protectValue
-  );
-
-  protectValueDisplay.innerHTML =
-    protectValue.toFixed(1) + " A";
-}
-
-btnUp.addEventListener("click", () => {
-  protectValue += STEP_PROTECT;
-  applyProtectValue();
-});
-
-btnDown.addEventListener("click", () => {
-  if (protectValue - STEP_PROTECT >= 0) {
-    protectValue -= STEP_PROTECT;
-    applyProtectValue();
-  }
-});
-function applyProtectVolt() {
-  isSendingProtect = true;
-
-  eraWidget.triggerAction(
-    actions10[0]?.action,
-    protectVoltValue
-  );
-
-  eraWidget.updateRealtimeConfig(
-    configProtectVolt.id,
-    protectVoltValue
-  );
-
-  protectVoltDisplay.innerHTML =
-    protectVoltValue.toFixed(0) + " V";
-}
-
-btnVUp.addEventListener("click", () => {
-  protectVoltValue += STEP_VOLT;
-  applyProtectVolt();
-});
-
-btnVDown.addEventListener("click", () => {
-  if (protectVoltValue - STEP_VOLT >= 0) {
-    protectVoltValue -= STEP_VOLT;
-    applyProtectVolt();
-  }
-});
     // Biến để lưu cấu hình và trạng thái hiện tại
     let configPower1 = null, configPower2 = null, configPower3 = null;
     let configPowerS1 = null, configPowerS2 = null, configPowerS3 = null;
@@ -508,8 +468,9 @@ btnVDown.addEventListener("click", () => {
     let configLed6 = null, newStatusLed6 = null, actions6 = [];
     let configLed7 = null, newStatusLed7 = null, actions7 = [];
     let configLed8 = null, newStatusLed8 = null, actions8 = [];
-    let configProtectFrom = null, newSProtectFrom = null, actions9 = [];
-    let configProtectVolt = null, actions10 = [];
+    let configProtectFrom = null, newSProtectFrom = null, actions9 = null;
+    let configProtectVolt = null, actions10 = null;
+    
     const eraWidget = new EraWidget();
     eraWidget.init({
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
@@ -609,24 +570,29 @@ function formatValue(v) {
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
         // const inputProtectFrom = values[newSProtectFrom.id].value
-const valueProtect = values[configProtectFrom.id].value;
+const valueProtect = values[configProtectFrom.id]?.value;
+const valueProtectVolt = values[configProtectVolt.id]?.value;
 
 if (!isSendingProtect && valueProtect !== null) {
   protectValue = parseFloat(valueProtect);
-  protectValueDisplay.innerHTML =
-    protectValue.toFixed(1) + " A";
+  protectCurrentSlider.value = protectValue;
+  protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
 }
 
 if (isSendingProtect && valueProtect == protectValue) {
   isSendingProtect = false;
 }
-const valueProtectVolt = values[configProtectVolt.id]?.value;
 
 if (!isSendingProtect && valueProtectVolt !== null) {
   protectVoltValue = parseFloat(valueProtectVolt);
-  protectVoltDisplay.innerHTML =
-    protectVoltValue.toFixed(0) + " V";
+  protectVoltSlider.value = protectVoltValue;
+  protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
 }
+
+if (isSendingProtect && valueProtectVolt == protectVoltValue) {
+  isSendingProtect = false;
+}
+
   
       
         // Cập nhật giao diện người dùng với giá trị mới
@@ -860,9 +826,10 @@ if (!isSendingProtect && valueProtectVolt !== null) {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
 // ===== GIÁ TRỊ DÒNG BẢO VỆ =====
-let protectValue = 0;        // giá trị đang chỉnh
-const STEP_PROTECT = 0.1;    // bước tăng / giảm
-let isSendingProtect = false; // khóa đồng bộ ERA
+let protectValue = 0;
+let protectVoltValue = 0;
+let isSendingProtect = false;
+
 
 
 
@@ -883,6 +850,91 @@ let isSendingProtect = false; // khóa đồng bộ ERA
 //   // (configProtectFrom.id,{protectValueDisplay});
 // });
 
+// function applyProtectValue() {
+//   isSendingProtect = true;
+
+//   // gửi action cho ESP32
+//   eraWidget.triggerAction(actions9[0]?.action, null);
+
+//   // ghi realtime config cho ERA
+//   eraWidget.updateRealtimeConfig(
+//     configProtectFrom.id,
+//     protectValue
+//   );
+
+//   protectValueDisplay.innerHTML =
+//     protectValue.toFixed(1) + " A";
+// }
+
+// btnUp.addEventListener("click", () => {
+//   protectValue += STEP_PROTECT;
+//   applyProtectValue();
+// });
+
+// btnDown.addEventListener("click", () => {
+//   if (protectValue - STEP_PROTECT >= 0) {
+//     protectValue -= STEP_PROTECT;
+//     applyProtectValue();
+//   }
+// });
+
+
+// function applyProtectVolt() {
+//   isSendingProtect = true;
+
+//   eraWidget.triggerAction(
+//     actions10[0]?.action,
+//     protectVoltValue
+//   );
+
+//   eraWidget.updateRealtimeConfig(
+//     configProtectVolt.id,
+//     protectVoltValue
+//   );
+
+//   protectVoltDisplay.innerHTML =
+//     protectVoltValue.toFixed(0) + " V";
+// }
+
+// btnVUp.addEventListener("click", () => {
+//   protectVoltValue += STEP_VOLT;
+//   applyProtectVolt();
+// });
+
+// btnVDown.addEventListener("click", () => {
+//   if (protectVoltValue - STEP_VOLT >= 0) {
+//     protectVoltValue -= STEP_VOLT;
+//     applyProtectVolt();
+//   }
+// });
+protectCurrentSlider.addEventListener("input", () => {
+  protectValue = parseFloat(protectCurrentSlider.value);
+  protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
+});
+
+protectCurrentSlider.addEventListener("change", () => {
+  isSendingProtect = true;
+
+  eraWidget.triggerAction(actions9[0]?.action, protectValue);
+  eraWidget.updateRealtimeConfig(
+    configProtectFrom.id,
+    protectValue
+  );
+});
+protectVoltSlider.addEventListener("input", () => {
+  protectVoltValue = parseFloat(protectVoltSlider.value);
+  protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
+});
+
+protectVoltSlider.addEventListener("change", () => {
+  isSendingProtect = true;
+
+  eraWidget.triggerAction(actions10[0]?.action, protectVoltValue);
+  eraWidget.updateRealtimeConfig(
+    configProtectVolt.id,
+    protectVoltValue
+  );
+});
 
   </script>
 </body>
