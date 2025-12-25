@@ -485,7 +485,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         actions6 = configuration.actions.slice(10, 12);
         actions7 = configuration.actions.slice(12, 14);
         actions8 = configuration.actions.slice(14, 16);
-        actions9 = configuration.actions.slice(16, 17);
+        actions9 = configuration.actions.slice(value);
 
 
       },
@@ -769,6 +769,7 @@ if (isSendingProtect && valueProtect == inputProtectFrom.value) {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
 let isSendingProtect = false;
+
 
 sendProtect.addEventListener("click", () => {
   const value = parseFloat(inputProtectFrom.value);
