@@ -485,7 +485,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         actions6 = configuration.actions.slice(10, 12);
         actions7 = configuration.actions.slice(12, 14);
         actions8 = configuration.actions.slice(14, 16);
-        actions9 = configuration.actions.slice(16, 17);
+        actions9 = configuration.actions.slice(value);
 
 
       },
@@ -777,10 +777,10 @@ sendProtect.addEventListener("click", () => {
   isSendingProtect = true;
 
   eraWidget.triggerAction(actions9[0]?.action, value);
-  // eraWidget.updateRealtimeConfig(
-  //   configProtectFrom.id,
-  //   value
-  // );
+  eraWidget.updateRealtimeConfig(
+    configProtectFrom.id,
+    value
+  );
   protectValueDisplay.innerHTML = value.toFixed(1) + " A";
 });
 
