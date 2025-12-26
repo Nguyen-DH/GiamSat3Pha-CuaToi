@@ -236,59 +236,23 @@
       </div>
       <div class="header-center">
         <h2 class="project-title">THIẾT KẾ & THI CÔNG MÔ HÌNH HỆ THÔNG GIÁM SÁT ĐIỆN 3 PHA </h2>
+              <div style="margin-top:5px;">
+                <h5 id="currentDateTime" style="font-weight:600;color:#000000;">
+                  --/--/---- --:--:--
+                </h5>
         <p class="project-info"><strong>GVHD:</strong>Th.S Nguyễn Văn Bình</p>
         <p class="project-info"><strong>SVTH:</strong><br>Lê Phước Nguyên — MSSV: 2225202160006<br>Nguyễn Huỳnh Ngọc Điền — MSSV: 2225202160107</p>
+        
       </div>
+
+</div>
+
     </div>
 
     <!-- Temperature and Protect Configuration Row -->
     <div class="temp-protect-row">
-<div class="protect-card">
-  <h5 class="text-primary">CẤU HÌNH BẢO VỆ</h5>
-
-  <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap;">
-
-    <!-- ===== DÒNG ===== -->
-    <div style="min-width:260px;">
-      <p class="text-muted mb-1">Dòng bảo vệ (A)</p>
-      <input
-        type="range"
-        id="protectCurrentSlider"
-        min="0"
-        max="10"
-        step="0.1"
-        value="0"
-        style="width:100%;">
-      <strong id="protectValueDisplay" style="font-size:18px;">0.0 A</strong>
-    </div>
-
-    <!-- ===== ÁP ===== -->
-    <div style="min-width:260px;">
-      <p class="text-muted mb-1">Áp bảo vệ (V)</p>
-      <input
-        type="range"
-        id="protectVoltSlider"
-        min="0"
-        max="250"
-        step="1"
-        value="0"
-        style="width:100%;">
-      <strong id="protectVoltDisplay" style="font-size:18px;">0 V</strong>
-    </div>
-
-  
-
-
-
- 
-</div>
-<!-- <p class="mt-2 text-muted">
-  Dòng bảo vệ đang áp dụng:
-  <strong id="protectValueDisplay" class="text-danger">-- A</strong>
-</p> -->
-        
-      </div>
       <div class="header-right">
+        
         <h5>🌡️ Nhiệt độ STM & ESP32</h5>
         <div class="flex-center">
           <div>
@@ -439,18 +403,12 @@
     const statusLed8 = document.getElementById('statusLed8');
     // const inputProtectFrom = document.getElementById("protectAll");
     // const sendProtect = document.getElementById("sendProtect");
-    const protectValueDisplay = document.getElementById("protectValueDisplay");
+    // const protectValueDisplay = document.getElementById("protectValueDisplay");
 
     const relayLight1 = document.getElementById('relayLight1');
     const Tempstm = document.getElementById("tempstm");
     const Tempsp32 = document.getElementById('tempesp32');
-const btnUp = document.getElementById("btnUp");
-const btnDown = document.getElementById("btnDown");
-const btnVUp = document.getElementById("btnVUp");
-const btnVDown = document.getElementById("btnVDown");
-const protectVoltDisplay = document.getElementById("protectVoltDisplay");
-const protectCurrentSlider = document.getElementById("protectCurrentSlider");
-const protectVoltSlider = document.getElementById("protectVoltSlider");
+
 
     // Biến để lưu cấu hình và trạng thái hiện tại
     let configPower1 = null, configPower2 = null, configPower3 = null;
@@ -469,16 +427,16 @@ const protectVoltSlider = document.getElementById("protectVoltSlider");
     let configLed7 = null, newStatusLed7 = null, actions7 = [];
     let configLed8 = null, newStatusLed8 = null, actions8 = [];
     let configProtectFrom = null, newSProtectFrom = null, actions9 = null;
-    let configProtectVolt = null, actions10 = null;
+    // let configProtectVolt = null, actions10 = null;
     
     const eraWidget = new EraWidget();
     eraWidget.init({
       needRealtimeConfigs: true,         /* Cần giá trị hiện thời */
       needHistoryConfigs: true,          /* Cần giá trị lịch sử */
       needActions: true,                 /* Cần các hành động (ví dụ Bật/Tắt đèn) */
-      maxRealtimeConfigsCount: 27,        /* Số lượng tối đa giá trị hiện thời */
+      maxRealtimeConfigsCount: 26,        /* Số lượng tối đa giá trị hiện thời */
       maxHistoryConfigsCount: 1,         /* Số lượng tối đa giá trị lịch sử */
-      maxActionsCount: 19,                /* Số lượng tối đa các hành động có thể kích hoạt */
+      maxActionsCount: 18,                /* Số lượng tối đa các hành động có thể kích hoạt */
       minRealtimeConfigsCount: 0,        /* Số lượng tối thiểu giá trị hiện thời */
       minHistoryConfigsCount: 0,         /* Số lượng tối thiểu giá trị lịch sử */
       minActionsCount: 0,                /* Số lượng tối thiểu hành động */
@@ -520,7 +478,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         configCurrentB=configuration.realtime_configs[24];
         configCurrentC=configuration.realtime_configs[25];
         configCurrentC=configuration.realtime_configs[25];
-        configProtectVolt=configuration.realtime_configs[26];
+        // configProtectVolt=configuration.realtime_configs[26];
         actions1 = configuration.actions.slice(0, 2);
         actions2 = configuration.actions.slice(2, 4);
         actions3 = configuration.actions.slice(4, 6);
@@ -530,7 +488,7 @@ console.log("REALTIME CONFIGS:", configuration.realtime_configs);
         actions7 = configuration.actions.slice(12, 14);
         actions8 = configuration.actions.slice(14, 16);
         actions9  = configuration.actions.slice(16, 17); // dòng
-        actions10 = configuration.actions.slice(17, 18); // áp
+        // actions10 = configuration.actions.slice(17, 18); // áp
 
 
 
@@ -570,28 +528,28 @@ function formatValue(v) {
         const valueCosB = values[configCosB.id].value;
         const valueCosC = values[configCosC.id].value;
         // const inputProtectFrom = values[newSProtectFrom.id].value
-const valueProtect = values[configProtectFrom.id]?.value;
-const valueProtectVolt = values[configProtectVolt.id]?.value;
+// const valueProtect = values[configProtectFrom.id]?.value;
+// const valueProtectVolt = values[configProtectVolt.id]?.value;
 
-if (!isSendingProtect && valueProtect !== null) {
-  protectValue = parseFloat(valueProtect);
-  protectCurrentSlider.value = protectValue;
-  protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
-}
+// if (!isSendingProtect && valueProtect !== null) {
+//   protectValue = parseFloat(valueProtect);
+//   protectCurrentSlider.value = protectValue;
+//   protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
+// }
 
-if (isSendingProtect && valueProtect == protectValue) {
-  isSendingProtect = false;
-}
+// if (isSendingProtect && valueProtect == protectValue) {
+//   isSendingProtect = false;
+// }
 
-if (!isSendingProtect && valueProtectVolt !== null) {
-  protectVoltValue = parseFloat(valueProtectVolt);
-  protectVoltSlider.value = protectVoltValue;
-  protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
-}
+// if (!isSendingProtect && valueProtectVolt !== null) {
+//   protectVoltValue = parseFloat(valueProtectVolt);
+//   protectVoltSlider.value = protectVoltValue;
+//   protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
+// }
 
-if (isSendingProtect && valueProtectVolt == protectVoltValue) {
-  isSendingProtect = false;
-}
+// if (isSendingProtect && valueProtectVolt == protectVoltValue) {
+//   isSendingProtect = false;
+// }
 
   
       
@@ -826,9 +784,9 @@ if (isSendingProtect && valueProtectVolt == protectVoltValue) {
       eraWidget.triggerAction(actions8[1]?.action, null);
     });
 // ===== GIÁ TRỊ DÒNG BẢO VỆ =====
-let protectValue = 0;
-let protectVoltValue = 0;
-let isSendingProtect = false;
+// let protectValue = 0;
+// let protectVoltValue = 0;
+// let isSendingProtect = false;
 
 
 
@@ -907,35 +865,54 @@ let isSendingProtect = false;
 //     applyProtectVolt();
 //   }
 // });
-protectCurrentSlider.addEventListener("input", () => {
-  protectValue = parseFloat(protectCurrentSlider.value);
-  protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
-});
+// protectCurrentSlider.addEventListener("input", () => {
+//   protectValue = parseFloat(protectCurrentSlider.value);
+//   protectValueDisplay.innerHTML = protectValue.toFixed(1) + " A";
+// });
 
-protectCurrentSlider.addEventListener("change", () => {
-  isSendingProtect = true;
+// protectCurrentSlider.addEventListener("change", () => {
+//   isSendingProtect = true;
 
-  eraWidget.triggerAction(actions9[0]?.action, protectValue);
-  eraWidget.updateRealtimeConfig(
-    configProtectFrom.id,
-    protectValue
-  );
-});
-protectVoltSlider.addEventListener("input", () => {
-  protectVoltValue = parseFloat(protectVoltSlider.value);
-  protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
-});
+//   eraWidget.triggerAction(actions9[0]?.action, protectValue);
+//   eraWidget.updateRealtimeConfig(
+//     configProtectFrom.id,
+//     protectValue
+//   );
+// });
+// protectVoltSlider.addEventListener("input", () => {
+//   protectVoltValue = parseFloat(protectVoltSlider.value);
+//   protectVoltDisplay.innerHTML = protectVoltValue.toFixed(0) + " V";
+// });
 
-protectVoltSlider.addEventListener("change", () => {
-  isSendingProtect = true;
+// protectVoltSlider.addEventListener("change", () => {
+//   isSendingProtect = true;
 
-  eraWidget.triggerAction(actions10[0]?.action, protectVoltValue);
-  eraWidget.updateRealtimeConfig(
-    configProtectVolt.id,
-    protectVoltValue
-  );
-});
+//   eraWidget.triggerAction(actions10[0]?.action, protectVoltValue);
+//   eraWidget.updateRealtimeConfig(
+//     configProtectVolt.id,
+//     protectVoltValue
+//   );
+// });
+function updateDateTime() {
+    const now = new Date();
 
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const dateTimeString =
+      `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+    document.getElementById("currentDateTime").innerHTML = dateTimeString;
+  }
+
+  // cập nhật mỗi giây
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
   </script>
 </body>
 </html>
